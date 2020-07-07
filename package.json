@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vscode-rat.helloWorld"
+    "*"
 	],
 	"main": "./extension.js",
 	"contributes": {

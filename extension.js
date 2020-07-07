@@ -9,22 +9,23 @@ const vscode = require('vscode');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+  console.log('Congratulations, your extension "vscode-rat" is now active!');
+  
+  vscode.workspace.onDidSaveTextDocument((document) => {
+    const file = document.fileName;
+    vscode.window.showInformationMessage(`Saved ${file}`);
+  });
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-rat" is now active!');
+  vscode.workspace.onDidOpenTextDocument((document) => {
+    const file = document.fileName;
+    vscode.window.showInformationMessage(`Opened ${file}`);
+  });
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-rat.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from VSCode Rat!');
-	});
-
-	context.subscriptions.push(disposable);
+  vscode.workspace.onDidChangeTextDocument((changes) => {
+    const file = changes.document.fileName;
+    console.log(JSON.stringify(changes));
+    vscode.window.showInformationMessage(`Modified ${file}`);
+  });
 }
 exports.activate = activate;
 
