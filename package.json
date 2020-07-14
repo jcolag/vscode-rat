@@ -15,11 +15,21 @@
 	"main": "./extension.js",
 	"contributes": {
 		"commands": [{
-            "command": "vscode-rat.helloWorld",
-            "title": "Hello World"
-
-		}]
-	},
+      "command": "vscode-rat.helloWorld",
+      "title": "Hello World"
+		}],
+    "configuration": {
+      "title": "VSCode Rat",
+      "properties": {
+        "vscodeRat.targetUrl": {
+          "type": "string",
+          "default": "http://localhost:8080/",
+          "description": "Server waiting for VSCode Rat to rat you out!",
+          "pattern": "https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)"
+        }
+      }
+    }
+  },
 	"scripts": {
 		"lint": "eslint .",
 		"pretest": "yarn run lint",
